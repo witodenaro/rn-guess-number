@@ -1,16 +1,24 @@
-import React from 'react';
+import React, {useMemo, useState} from 'react';
 
-import {View, Text, StyleSheet} from 'react-native';
+import {View, StyleSheet} from 'react-native';
+import {useSelector} from 'react-redux';
 
-import {Card} from './components/card';
 import Header from './components/header';
 import StartGameScreen from './screens/start-game-screen';
+import GameScreen from './screens/game-screen';
+import {selectGameStarted} from './redux/game/game.selectors';
 
 const App = () => {
+  const gameStarted = useSelector(selectGameStarted);
+
+  const renderedContent = useMemo(() =>
+    gameStarted ? <GameScreen /> : <StartGameScreen />,
+  );
+
   return (
     <View style={styles.screenView}>
       <Header />
-      <StartGameScreen />
+      {renderedContent}
     </View>
   );
 };

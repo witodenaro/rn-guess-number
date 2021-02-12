@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {
   View,
   Text,
@@ -8,55 +8,67 @@ import {
   Keyboard,
   Alert,
 } from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 
 import Card from '../components/card';
 import Input from '../components/input';
 import NumberContainer from '../components/number-container';
 import Colors from '../constants/colors';
+import MythicNumberLimits from '../constants/mythic-number-limits';
+import {startGame} from '../redux/game/game.actions';
 
-const MIN_MYSTIC_NUMBER = 1;
-const MAX_MYSTIC_NUMBER = 99;
+import {changeMythicNumber} from '../redux/mythic-number/mythic-number.actions';
+import {selectMythicNumberValue} from '../redux/mythic-number/mythic-number.selectors';
 
 const StartGameScreen = () => {
+  const mythicNumber = useSelector(selectMythicNumberValue);
+  const dispatch = useDispatch();
   const [inputText, setInputText] = useState('');
-  const [mysticNumber, setMysticNumber] = useState(null);
   const [confirmed, setConfirmed] = useState(false);
 
-  const numberInputHandler = (text) => {
+  const numberInputHandler = useCallback((text) => {
     setInputText(text.replace(/\D/g, ''));
-  };
+  }, []);
 
-  const resetInputHandler = () => {
+  const resetInputHandler = useCallback(() => {
     setInputText('');
     setConfirmed(false);
-  };
+  }, []);
 
-  const confirmInputHandler = () => {
+  const confirmInputHandler = useCallback(() => {
     const chosenNumber = parseInt(inputText);
     if (
       isNaN(chosenNumber) ||
-      chosenNumber < MIN_MYSTIC_NUMBER ||
-      chosenNumber > MAX_MYSTIC_NUMBER
+      chosenNumber < MythicNumberLimits.MIN ||
+      chosenNumber > MythicNumberLimits.MAX
     ) {
       Alert.alert(
         'Invalid number!',
-        `Number must be chosen between ${MIN_MYSTIC_NUMBER} and ${MAX_MYSTIC_NUMBER}`,
+        `Number must be chosen between ${MythicNumberLimits.MIN} and ${MythicNumberLimits.MAX}`,
         [{text: 'Okay', style: 'destructive', onPress: resetInputHandler}],
       );
       return;
     }
 
     Keyboard.dismiss();
-    setMysticNumber(chosenNumber);
+    dispatch(changeMythicNumber(chosenNumber));
     setInputText('');
     setConfirmed(true);
-  };
+  }, [inputText]);
+
+  const startGameHandler = useCallback(() => {
+    dispatch(startGame());
+  }, []);
 
   const renderedConfirmed = confirmed ? (
     <Card style={styles.outputContainer}>
       <Text style={styles.outputText}>Chosen number is: </Text>
-      <NumberContainer>{mysticNumber}</NumberContainer>
-      <Button title="Let's go" color={Colors.primary} />
+      <NumberContainer>{mythicNumber}</NumberContainer>
+      <Button
+        title="Let's go"
+        color={Colors.primary}
+        onPress={startGameHandler}
+      />
     </Card>
   ) : null;
 
