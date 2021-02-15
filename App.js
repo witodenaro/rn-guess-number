@@ -1,5 +1,4 @@
-import React, {useMemo, useState} from 'react';
-
+import React, {useEffect, useMemo} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {useSelector} from 'react-redux';
 
@@ -9,8 +8,13 @@ import GameScreen from './screens/game-screen';
 import GAME_STATUS from './constants/game-status';
 import {selectGameStatus} from './redux/game/game.selectors';
 import GameOverScreen from './screens/game-over-screen';
+import SplashScreen from 'react-native-splash-screen';
 
 const App = () => {
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
+
   const gameStatus = useSelector(selectGameStatus);
 
   const renderedContent = useMemo(() => {

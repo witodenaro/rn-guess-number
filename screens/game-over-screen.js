@@ -1,8 +1,9 @@
 import React from 'react';
-import {View, Text, StyleSheet, Button} from 'react-native';
+import {View, StyleSheet, Button, Image} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
+
 import Card from '../components/card';
-import NumberContainer from '../components/number-container';
+import Text from '../components/text';
 
 import {resetGame} from '../redux/game/game.actions';
 import {
@@ -21,15 +22,21 @@ const GameOverScreen = () => {
 
   return (
     <View style={styles.screen}>
+      <Image
+        source={require('../assets/success.png')}
+        style={styles.backgroundImage}
+      />
       <Card style={styles.results}>
-        <Text style={styles.resultText}>Mythic number is </Text>
-        <NumberContainer>{mythicNumber}</NumberContainer>
-        <Text style={styles.resultText}>Computer attemps count: </Text>
-        <NumberContainer>{attemptsCount}</NumberContainer>
+        <Text style={styles.resultText}>
+          Your phone needed{' '}
+          <Text style={styles.highlighted}>{attemptsCount}</Text> attempts to
+          guess your number{' '}
+          <Text style={styles.highlighted}>{mythicNumber}</Text>{' '}
+        </Text>
       </Card>
-      <Card style={styles.buttonsContaier}>
+      <View style={styles.buttonsContaier}>
         <Button title="RESTART" onPress={restartHandler} />
-      </Card>
+      </View>
     </View>
   );
 };
@@ -40,7 +47,7 @@ const styles = StyleSheet.create({
   },
   results: {
     marginHorizontal: 20,
-    marginTop: 20,
+    marginTop: 140,
     alignItems: 'center',
   },
   buttonsContaier: {
@@ -48,6 +55,13 @@ const styles = StyleSheet.create({
     marginTop: 20,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  backgroundImage: {width: '100%', height: '100%', position: 'absolute'},
+  highlighted: {
+    color: 'red',
+  },
+  resultText: {
+    textAlign: 'center',
   },
 });
 

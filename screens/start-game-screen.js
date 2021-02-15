@@ -1,7 +1,6 @@
 import React, {useCallback, useState} from 'react';
 import {
   View,
-  Text,
   StyleSheet,
   Button,
   TouchableWithoutFeedback,
@@ -10,6 +9,7 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
+import Text from '../components/text';
 import Card from '../components/card';
 import Input from '../components/input';
 import NumberContainer from '../components/number-container';

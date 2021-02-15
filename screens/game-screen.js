@@ -1,10 +1,11 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react';
-import {Button, StyleSheet, Text, View, Alert} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {Button, StyleSheet, View, Alert} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {selectMythicNumberValue} from '../redux/mythic-number/mythic-number.selectors';
 
 import NumberContainer from '../components/number-container';
 import Card from '../components/card';
+import Text from '../components/text';
 
 import MythicNumberLimits from '../constants/mythic-number-limits';
 import colors from '../constants/colors';
@@ -32,8 +33,8 @@ const GameScreen = () => {
   const dispatch = useDispatch();
   const mythicNumber = useSelector(selectMythicNumberValue);
 
-  const greatestGuess = useRef(MythicNumberLimits.MAX);
-  const lowestGuess = useRef(MythicNumberLimits.MIN);
+  const greatestGuess = useRef(MythicNumberLimits.MAX + 1);
+  const lowestGuess = useRef(MythicNumberLimits.MIN - 1);
 
   const [currentGuess, setCurrentGuess] = useState(
     randInt(MythicNumberLimits.MIN, MythicNumberLimits.MAX, mythicNumber),

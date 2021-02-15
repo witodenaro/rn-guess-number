@@ -1,5 +1,7 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, StyleSheet} from 'react-native';
+
+import Text from '../components/text';
 
 import Colors from '../constants/colors';
 
@@ -23,6 +25,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     color: 'black',
     fontSize: 18,
+    fontFamily: 'OpenSans-Regular',
   },
 });
 
