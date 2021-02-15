@@ -7,3 +7,7 @@ export const startGame = () => ({
 export const endGame = () => ({
   type: GameActionTypes.END_GAME,
 });
+
+export const resetGame = () => ({
+  type: GameActionTypes.RESET_GAME,
+});

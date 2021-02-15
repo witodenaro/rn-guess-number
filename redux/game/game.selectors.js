@@ -2,7 +2,7 @@ import {createSelector} from 'reselect';
 
 const selectGame = (state) => state.game;
 
-export const selectGameStarted = createSelector(
+export const selectGameStatus = createSelector(
   selectGame,
-  (game) => game.started,
+  (game) => game.status,
 );
