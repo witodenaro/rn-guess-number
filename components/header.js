@@ -1,14 +1,14 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 
-import Text from '../components/text';
+import OpenSansText from '../components/open-sans-text';
 
 import Colors from '../constants/colors';
 
 const Header = () => {
   return (
     <View style={styles.header}>
-      <Text style={styles.headerTitle}>Guess a number!</Text>
+      <OpenSansText style={styles.headerTitle}>Guess a number!</OpenSansText>
     </View>
   );
 };

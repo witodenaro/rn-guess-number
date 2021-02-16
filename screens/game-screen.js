@@ -1,14 +1,16 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {Button, StyleSheet, View, Alert} from 'react-native';
+import React, {useEffect, useRef, useState, useMemo} from 'react';
+import {StyleSheet, View, Alert, FlatList, SafeAreaView} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {selectMythicNumberValue} from '../redux/mythic-number/mythic-number.selectors';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 import NumberContainer from '../components/number-container';
 import Card from '../components/card';
-import Text from '../components/text';
+import OpenSansText from '../components/open-sans-text';
+import MainButton from '../components/main-button';
 
 import MythicNumberLimits from '../constants/mythic-number-limits';
-import colors from '../constants/colors';
+import COLORS from '../constants/colors';
 import {setGuessAttemps} from '../redux/mythic-number/mythic-number.actions';
 import {endGame} from '../redux/game/game.actions';
 
@@ -33,21 +35,19 @@ const GameScreen = () => {
   const dispatch = useDispatch();
   const mythicNumber = useSelector(selectMythicNumberValue);
 
-  const greatestGuess = useRef(MythicNumberLimits.MAX + 1);
-  const lowestGuess = useRef(MythicNumberLimits.MIN - 1);
+  const greatestGuess = useRef(MythicNumberLimits.MAX);
+  const lowestGuess = useRef(MythicNumberLimits.MIN);
 
   const [currentGuess, setCurrentGuess] = useState(
     randInt(MythicNumberLimits.MIN, MythicNumberLimits.MAX, mythicNumber),
   );
 
-  const [guessesCount, setGuessesCount] = useState(1);
+  const [pastGuesses, setPastGuesses] = useState([currentGuess]);
 
   useEffect(() => {
     if (currentGuess === mythicNumber) {
-      dispatch(setGuessAttemps(guessesCount));
+      dispatch(setGuessAttemps(pastGuesses.length));
       dispatch(endGame());
-    } else {
-      setGuessesCount((prevGuessCount) => prevGuessCount + 1);
     }
   }, [currentGuess, mythicNumber]);
 
@@ -67,43 +67,77 @@ const GameScreen = () => {
     if (direction === DIRECTIONS.LOWER) {
       greatestGuess.current = currentGuess;
 
-      nextGuess = randInt(lowestGuess.current + 1, currentGuess - 1);
+      nextGuess = randInt(lowestGuess.current, currentGuess - 1);
     } else if (direction === DIRECTIONS.GREATER) {
-      lowestGuess.current = currentGuess;
+      lowestGuess.current = currentGuess + 1;
 
-      nextGuess = randInt(currentGuess + 1, greatestGuess.current - 1);
+      nextGuess = randInt(currentGuess + 1, greatestGuess.current);
     }
 
     setCurrentGuess(nextGuess);
+    setPastGuesses((currentPastGuesses) => [nextGuess, ...currentPastGuesses]);
   };
 
   const renderedButtons = (
     <Card style={styles.buttonsContainer}>
-      <Button
-        color={colors.opposite}
-        title="LOWER"
-        onPress={nextGuessHandler.bind(null, DIRECTIONS.LOWER)}
-      />
-      <Button
-        color={colors.secondary}
-        title="GREATER"
-        onPress={nextGuessHandler.bind(null, DIRECTIONS.GREATER)}
-      />
+      <MainButton
+        opposite
+        onPress={nextGuessHandler.bind(null, DIRECTIONS.LOWER)}>
+        <Icon name="md-remove" size={20} />
+      </MainButton>
+      <MainButton
+        secondary
+        onPress={nextGuessHandler.bind(null, DIRECTIONS.GREATER)}>
+        <Icon name="md-add" size={20} />
+      </MainButton>
     </Card>
   );
 
+  const renderedHistory = useMemo(
+    () => (
+      <FlatList
+        style={styles.historyFlatList}
+        contentContainerStyle={styles.historyContainer}
+        data={pastGuesses}
+        keyExtractor={(item) => item}
+        renderItem={({item, index}) => (
+          <View style={styles.historyItem}>
+            <OpenSansText style={styles.historyText}>
+              #{pastGuesses.length - index}
+            </OpenSansText>
+            <OpenSansText style={styles.historyText}>{item}</OpenSansText>
+          </View>
+        )}
+      />
+    ),
+    [pastGuesses],
+  );
+
   return (
-    <View style={styles.screen}>
+    <SafeAreaView style={styles.screen}>
       <Card style={styles.mythicNumberContainer}>
-        <Text style={styles.textTitle}>Mythic number:</Text>
+        <OpenSansText style={styles.textTitle}>Mythic number:</OpenSansText>
         <NumberContainer>{mythicNumber}</NumberContainer>
       </Card>
       <Card style={styles.guessConainer}>
-        <Text style={styles.textTitle}>Computer's guess: </Text>
+        <OpenSansText style={styles.textTitle}>Computer's guess: </OpenSansText>
         <NumberContainer>{currentGuess}</NumberContainer>
       </Card>
       {renderedButtons}
-    </View>
+      <View style={styles.historyWrapper}>
+        <OpenSansText
+          style={{
+            color: COLORS.primary,
+            textShadowRadius: 1,
+            fontSize: 20,
+            marginBottom: 20,
+          }}>
+          Previous guesses:{' '}
+        </OpenSansText>
+
+        {renderedHistory}
+      </View>
+    </SafeAreaView>
   );
 };
 
@@ -130,10 +164,36 @@ const styles = StyleSheet.create({
   textTitle: {
     textAlign: 'center',
     fontSize: 18,
-    color: colors.secondary,
+    color: COLORS.secondary,
   },
   gameResultContainer: {
     marginTop: 20,
+  },
+  historyWrapper: {
+    width: '100%',
+    marginTop: 20,
+    flex: 1,
+    alignItems: 'center',
+  },
+  historyContainer: {
+    width: 300,
+  },
+  historyItem: {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: 'rgba(0, 0, 0, 0.4)',
+    paddingVertical: 10,
+  },
+  historyText: {
+    fontSize: 20,
+    textShadowRadius: 2,
+    color: COLORS.secondary,
   },
 });
 

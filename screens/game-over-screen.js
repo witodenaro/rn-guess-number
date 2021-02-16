@@ -3,7 +3,8 @@ import {View, StyleSheet, Button, Image} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
 import Card from '../components/card';
-import Text from '../components/text';
+import OpenSansText from '../components/open-sans-text';
+import MainButton from '../components/main-button';
 
 import {resetGame} from '../redux/game/game.actions';
 import {
@@ -27,16 +28,21 @@ const GameOverScreen = () => {
         style={styles.backgroundImage}
       />
       <Card style={styles.results}>
-        <Text style={styles.resultText}>
+        <OpenSansText style={styles.resultText}>
           Your phone needed{' '}
-          <Text style={styles.highlighted}>{attemptsCount}</Text> attempts to
-          guess your number{' '}
-          <Text style={styles.highlighted}>{mythicNumber}</Text>{' '}
-        </Text>
+          <OpenSansText style={styles.highlighted}>
+            {attemptsCount}
+          </OpenSansText>{' '}
+          attempts to guess your number{' '}
+          <OpenSansText style={styles.highlighted}>{mythicNumber}</OpenSansText>{' '}
+        </OpenSansText>
       </Card>
-      <View style={styles.buttonsContaier}>
-        <Button title="RESTART" onPress={restartHandler} />
-      </View>
+      <MainButton
+        opposite
+        style={styles.restartButton}
+        onPress={restartHandler}>
+        Restart
+      </MainButton>
     </View>
   );
 };
@@ -62,6 +68,10 @@ const styles = StyleSheet.create({
   },
   resultText: {
     textAlign: 'center',
+  },
+  restartButton: {
+    marginTop: 20,
+    alignSelf: 'center',
   },
 });
 

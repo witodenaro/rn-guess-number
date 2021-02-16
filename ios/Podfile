@@ -31,3 +31,5 @@ target 'RNGuessNumber-tvOS' do
     # Pods for testing
   end
 end
+
+pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'

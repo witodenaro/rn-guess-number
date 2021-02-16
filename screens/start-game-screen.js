@@ -2,18 +2,18 @@ import React, {useCallback, useState} from 'react';
 import {
   View,
   StyleSheet,
-  Button,
   TouchableWithoutFeedback,
   Keyboard,
   Alert,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
-import Text from '../components/text';
+import OpenSansText from '../components/open-sans-text';
 import Card from '../components/card';
 import Input from '../components/input';
 import NumberContainer from '../components/number-container';
 import Colors from '../constants/colors';
+import MainButton from '../components/main-button';
 import MythicNumberLimits from '../constants/mythic-number-limits';
 import {startGame} from '../redux/game/game.actions';
 
@@ -62,22 +62,18 @@ const StartGameScreen = () => {
 
   const renderedConfirmed = confirmed ? (
     <Card style={styles.outputContainer}>
-      <Text style={styles.outputText}>Chosen number is: </Text>
+      <OpenSansText style={styles.outputText}>Chosen number is: </OpenSansText>
       <NumberContainer>{mythicNumber}</NumberContainer>
-      <Button
-        title="Let's go"
-        color={Colors.primary}
-        onPress={startGameHandler}
-      />
+      <MainButton onPress={startGameHandler}>Let's go</MainButton>
     </Card>
   ) : null;
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.screen}>
-        <Text style={styles.title}>Start a New Game!</Text>
+        <OpenSansText style={styles.title}>Start a New Game!</OpenSansText>
         <Card style={styles.inputContainer}>
-          <Text>Select a Number</Text>
+          <OpenSansText>Select a Number</OpenSansText>
           <Input
             style={styles.input}
             maxLength={2}
@@ -90,19 +86,11 @@ const StartGameScreen = () => {
           />
           <View style={styles.buttonsContainer}>
             <View style={styles.button}>
-              <Button
-                title="Reset"
-                onPress={resetInputHandler}
-                color={Colors.opposite}
-              />
+              <MainButton opposite onPress={resetInputHandler}>
+                Reset
+              </MainButton>
             </View>
-            <View style={styles.button}>
-              <Button
-                title="Confirm"
-                onPress={confirmInputHandler}
-                color={Colors.primary}
-              />
-            </View>
+            <MainButton onPress={confirmInputHandler}>Confirm</MainButton>
           </View>
         </Card>
         {renderedConfirmed}
@@ -142,7 +130,6 @@ const styles = StyleSheet.create({
   outputContainer: {
     marginTop: 20,
   },
-  outputText: {},
 });
 
 export default StartGameScreen;
