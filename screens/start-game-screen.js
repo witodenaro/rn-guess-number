@@ -5,6 +5,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Alert,
+  Dimensions,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
@@ -79,18 +80,20 @@ const StartGameScreen = () => {
             maxLength={2}
             keyboardType="number-pad"
             autoCorrect={false}
-            autoCapitalize={false}
             value={inputText}
             onSubmitEditing={confirmInputHandler}
             onChangeText={numberInputHandler}
           />
           <View style={styles.buttonsContainer}>
-            <View style={styles.button}>
-              <MainButton opposite onPress={resetInputHandler}>
-                Reset
-              </MainButton>
-            </View>
-            <MainButton onPress={confirmInputHandler}>Confirm</MainButton>
+            <MainButton
+              style={styles.button}
+              opposite
+              onPress={resetInputHandler}>
+              Reset
+            </MainButton>
+            <MainButton style={styles.button} onPress={confirmInputHandler}>
+              Confirm
+            </MainButton>
           </View>
         </Card>
         {renderedConfirmed}
@@ -111,6 +114,8 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     width: '80%',
+    maxWidth: '95%',
+    minWidth: 300,
     alignItems: 'center',
   },
   input: {
@@ -118,7 +123,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   buttonsContainer: {
-    marginTop: 20,
+    marginTop: Dimensions.get('window').height > 600 ? 20 : 5,
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-between',

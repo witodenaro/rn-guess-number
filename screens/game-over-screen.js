@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, Button, Image} from 'react-native';
+import {View, StyleSheet, Image} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
 import Card from '../components/card';
@@ -11,6 +11,7 @@ import {
   selectGuessAttempsCount,
   selectMythicNumberValue,
 } from '../redux/mythic-number/mythic-number.selectors';
+import COLORS from '../constants/colors';
 
 const GameOverScreen = () => {
   const dispatch = useDispatch();
@@ -64,7 +65,7 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {width: '100%', height: '100%', position: 'absolute'},
   highlighted: {
-    color: 'red',
+    color: COLORS.secondary,
   },
   resultText: {
     textAlign: 'center',

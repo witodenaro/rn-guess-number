@@ -1,5 +1,13 @@
 import React, {useEffect, useRef, useState, useMemo} from 'react';
-import {StyleSheet, View, Alert, FlatList, SafeAreaView} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Alert,
+  FlatList,
+  SafeAreaView,
+  Dimensions,
+  ScrollView,
+} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {selectMythicNumberValue} from '../redux/mythic-number/mythic-number.selectors';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -102,10 +110,14 @@ const GameScreen = () => {
         keyExtractor={(item) => item}
         renderItem={({item, index}) => (
           <View style={styles.historyItem}>
-            <OpenSansText style={styles.historyText}>
-              #{pastGuesses.length - index}
-            </OpenSansText>
-            <OpenSansText style={styles.historyText}>{item}</OpenSansText>
+            <View style={styles.textContainer}>
+              <OpenSansText style={styles.historyText}>
+                #{pastGuesses.length - index}
+              </OpenSansText>
+            </View>
+            <View style={styles.textContainer}>
+              <OpenSansText style={styles.historyText}>{item}</OpenSansText>
+            </View>
           </View>
         )}
       />
@@ -115,50 +127,50 @@ const GameScreen = () => {
 
   return (
     <SafeAreaView style={styles.screen}>
-      <Card style={styles.mythicNumberContainer}>
-        <OpenSansText style={styles.textTitle}>Mythic number:</OpenSansText>
-        <NumberContainer>{mythicNumber}</NumberContainer>
-      </Card>
-      <Card style={styles.guessConainer}>
-        <OpenSansText style={styles.textTitle}>Computer's guess: </OpenSansText>
-        <NumberContainer>{currentGuess}</NumberContainer>
-      </Card>
-      {renderedButtons}
-      <View style={styles.historyWrapper}>
-        <OpenSansText
-          style={{
-            color: COLORS.primary,
-            textShadowRadius: 1,
-            fontSize: 20,
-            marginBottom: 20,
-          }}>
-          Previous guesses:{' '}
-        </OpenSansText>
+      <ScrollView
+        style={{width: '100%'}}
+        contentContainerStyle={{...styles.screen, flex: 0}}>
+        <Card style={styles.mythicNumberContainer}>
+          <OpenSansText style={styles.textTitle}>Mythic number:</OpenSansText>
+          <NumberContainer>{mythicNumber}</NumberContainer>
+        </Card>
+        <Card style={styles.guessContainer}>
+          <OpenSansText style={styles.textTitle}>
+            Computer's guess:{' '}
+          </OpenSansText>
+          <NumberContainer>{currentGuess}</NumberContainer>
+        </Card>
+        {renderedButtons}
+        <View style={styles.historyWrapper}>
+          <OpenSansText style={styles.historyTitle}>
+            Previous guesses:{' '}
+          </OpenSansText>
 
-        {renderedHistory}
-      </View>
+          {renderedHistory}
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   screen: {
+    alignItems: 'center',
     flex: 1,
     padding: 10,
-    alignItems: 'center',
   },
   buttonsContainer: {
     width: 300,
     maxWidth: '80%',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    marginTop: 20,
+    marginTop: Dimensions.get('window').height > 600 ? 20 : 5,
   },
   mythicNumberContainer: {
     minWidth: 200,
-    marginBottom: 20,
+    marginBottom: Dimensions.get('window').height > 600 ? 20 : 5,
   },
-  guessConainer: {
+  guessContainer: {
     minWidth: 200,
   },
   textTitle: {
@@ -171,28 +183,34 @@ const styles = StyleSheet.create({
   },
   historyWrapper: {
     width: '100%',
-    marginTop: 20,
+    marginTop: Dimensions.get('window').height > 600 ? 20 : 5,
     flex: 1,
     alignItems: 'center',
   },
   historyContainer: {
-    width: 300,
+    minWidth: 300,
+    maxWidth: '95%',
+    alignItems: 'stretch',
   },
   historyItem: {
-    width: '100%',
+    flex: 0,
     display: 'flex',
     justifyContent: 'space-between',
-    paddingHorizontal: 20,
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 10,
     borderWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.4)',
-    paddingVertical: 10,
+    padding: 10,
   },
   historyText: {
     fontSize: 20,
     textShadowRadius: 2,
+    color: COLORS.secondary,
+  },
+  historyTitle: {
+    marginBottom: Dimensions.get('window') > 600 ? 20 : 5,
+    fontSize: 20,
     color: COLORS.secondary,
   },
 });
