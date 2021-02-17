@@ -11,7 +11,7 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import {selectMythicNumberValue} from '../redux/mythic-number/mythic-number.selectors';
 import Icon from 'react-native-vector-icons/Ionicons';
-
+import Orientation from 'react-native-orientation-locker';
 import NumberContainer from '../components/number-container';
 import Card from '../components/card';
 import OpenSansText from '../components/open-sans-text';
@@ -19,7 +19,7 @@ import MainButton from '../components/main-button';
 
 import MythicNumberLimits from '../constants/mythic-number-limits';
 import COLORS from '../constants/colors';
-import {setGuessAttemps} from '../redux/mythic-number/mythic-number.actions';
+import {setGuessAttempts} from '../redux/game/game.actions';
 import {endGame} from '../redux/game/game.actions';
 
 const DIRECTIONS = {
@@ -51,13 +51,26 @@ const GameScreen = () => {
   );
 
   const [pastGuesses, setPastGuesses] = useState([currentGuess]);
+  const [availableDeviceHeight, setAvailableDeviceHeight] = useState(
+    Dimensions.get('window').height,
+  );
 
   useEffect(() => {
     if (currentGuess === mythicNumber) {
-      dispatch(setGuessAttemps(pastGuesses.length));
+      dispatch(setGuessAttempts(pastGuesses.length));
       dispatch(endGame());
     }
   }, [currentGuess, mythicNumber]);
+
+  useEffect(() => {
+    const updateLayout = () => {
+      setAvailableDeviceHeight(Dimensions.get('window').height);
+    };
+
+    Dimensions.addEventListener('change', updateLayout);
+
+    return () => Dimensions.removeEventListener('change', updateLayout);
+  }, []);
 
   const nextGuessHandler = (direction) => {
     if (
@@ -86,21 +99,6 @@ const GameScreen = () => {
     setPastGuesses((currentPastGuesses) => [nextGuess, ...currentPastGuesses]);
   };
 
-  const renderedButtons = (
-    <Card style={styles.buttonsContainer}>
-      <MainButton
-        opposite
-        onPress={nextGuessHandler.bind(null, DIRECTIONS.LOWER)}>
-        <Icon name="md-remove" size={20} />
-      </MainButton>
-      <MainButton
-        secondary
-        onPress={nextGuessHandler.bind(null, DIRECTIONS.GREATER)}>
-        <Icon name="md-add" size={20} />
-      </MainButton>
-    </Card>
-  );
-
   const renderedHistory = useMemo(
     () => (
       <FlatList
@@ -125,6 +123,46 @@ const GameScreen = () => {
     [pastGuesses],
   );
 
+  if (availableDeviceHeight < 600) {
+    return (
+      <SafeAreaView style={styles.screen}>
+        <ScrollView
+          style={{width: '100%'}}
+          contentContainerStyle={{...styles.screen, flex: 0}}>
+          <Card style={styles.mythicNumberContainer}>
+            <OpenSansText style={styles.textTitle}>Mythic number:</OpenSansText>
+            <NumberContainer>{mythicNumber}</NumberContainer>
+          </Card>
+          <View style={styles.controls}>
+            <MainButton
+              opposite
+              onPress={nextGuessHandler.bind(null, DIRECTIONS.LOWER)}>
+              <Icon name="md-remove" size={20} />
+            </MainButton>
+            <View>
+              <OpenSansText style={styles.textTitle}>
+                Computer's guess:{' '}
+              </OpenSansText>
+              <NumberContainer>{currentGuess}</NumberContainer>
+            </View>
+            <MainButton
+              secondary
+              onPress={nextGuessHandler.bind(null, DIRECTIONS.GREATER)}>
+              <Icon name="md-add" size={20} />
+            </MainButton>
+          </View>
+          <View style={styles.historyWrapper}>
+            <OpenSansText style={styles.historyTitle}>
+              Previous guesses:{' '}
+            </OpenSansText>
+
+            {renderedHistory}
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.screen}>
       <ScrollView
@@ -140,7 +178,18 @@ const GameScreen = () => {
           </OpenSansText>
           <NumberContainer>{currentGuess}</NumberContainer>
         </Card>
-        {renderedButtons}
+        <Card style={styles.buttonsContainer}>
+          <MainButton
+            opposite
+            onPress={nextGuessHandler.bind(null, DIRECTIONS.LOWER)}>
+            <Icon name="md-remove" size={20} />
+          </MainButton>
+          <MainButton
+            secondary
+            onPress={nextGuessHandler.bind(null, DIRECTIONS.GREATER)}>
+            <Icon name="md-add" size={20} />
+          </MainButton>
+        </Card>
         <View style={styles.historyWrapper}>
           <OpenSansText style={styles.historyTitle}>
             Previous guesses:{' '}
@@ -207,6 +256,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textShadowRadius: 2,
     color: COLORS.secondary,
+  },
+  controls: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   historyTitle: {
     marginBottom: Dimensions.get('window') > 600 ? 20 : 5,

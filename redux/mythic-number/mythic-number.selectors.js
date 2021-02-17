@@ -8,8 +8,3 @@ export const selectMythicNumberValue = createSelector(
   selectMythicNumber,
   (mythicNumber) => mythicNumber.value,
 );
-
-export const selectGuessAttempsCount = createSelector(
-  selectMythicNumber,
-  (mythicNumber) => mythicNumber.guessAttempts,
-);

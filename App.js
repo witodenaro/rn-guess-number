@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, LogBox} from 'react-native';
 import {useSelector} from 'react-redux';
 
 import Header from './components/header';
@@ -9,10 +9,14 @@ import GAME_STATUS from './constants/game-status';
 import {selectGameStatus} from './redux/game/game.selectors';
 import GameOverScreen from './screens/game-over-screen';
 import SplashScreen from 'react-native-splash-screen';
+import Orientation from 'react-native-orientation-locker';
 
 const App = () => {
+  console.log('unlocked all');
+  Orientation.unlockAllOrientations();
   useEffect(() => {
     SplashScreen.hide();
+    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
   }, []);
 
   const gameStatus = useSelector(selectGameStatus);

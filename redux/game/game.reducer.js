@@ -3,6 +3,7 @@ import GAME_STATUS from '../../constants/game-status';
 
 const initialState = {
   status: GAME_STATUS.NOT_STARTED,
+  guessAttempts: 0,
 };
 
 const gameReducer = (state = initialState, {type, payload}) => {
@@ -27,6 +28,11 @@ const gameReducer = (state = initialState, {type, payload}) => {
         ...state,
         status: GAME_STATUS.NOT_STARTED,
       };
+
+    case GameActionTypes.SET_GUESS_ATTEMPS:
+      if (payload === state.value) return state;
+
+      return {...state, guessAttempts: payload};
 
     default:
       return state;

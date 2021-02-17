@@ -47,7 +47,7 @@
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* RNGuessNumberTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNGuessNumberTests.m; sourceTree = "<group>"; };
 		090EB1D068CA4C2EAA5E60A9 /* Pods-RNGuessNumber-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNGuessNumber-tvOS.release.xcconfig"; path = "Target Support Files/Pods-RNGuessNumber-tvOS/Pods-RNGuessNumber-tvOS.release.xcconfig"; sourceTree = "<group>"; };
-		0F3E923EF4CF4F4CB904CADF /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Regular.ttf"; path = "../assets/fonts/OpenSans-Regular.ttf"; sourceTree = "<group>"; };
+		0F3E923EF4CF4F4CB904CADF /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Regular.ttf"; path = "../assets/fonts/OpenSans-Regular.ttf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* RNGuessNumber.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RNGuessNumber.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = RNGuessNumber/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = RNGuessNumber/AppDelegate.m; sourceTree = "<group>"; };
@@ -58,7 +58,7 @@
 		2D02E4901E0B4A5D006451C7 /* RNGuessNumber-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "RNGuessNumber-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E3B64CCA7B881CF293496F5 /* Pods-RNGuessNumber-RNGuessNumberTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNGuessNumber-RNGuessNumberTests.release.xcconfig"; path = "Target Support Files/Pods-RNGuessNumber-RNGuessNumberTests/Pods-RNGuessNumber-RNGuessNumberTests.release.xcconfig"; sourceTree = "<group>"; };
 		486EFFB18499B02F071FAB30 /* libPods-RNGuessNumber-RNGuessNumberTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNGuessNumber-RNGuessNumberTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		54B3206D0BBA4E6B9F2BE9FC /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Bold.ttf"; path = "../assets/fonts/OpenSans-Bold.ttf"; sourceTree = "<group>"; };
+		54B3206D0BBA4E6B9F2BE9FC /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Bold.ttf"; path = "../assets/fonts/OpenSans-Bold.ttf"; sourceTree = "<group>"; };
 		6669BB3E9A64A7F4DA85A845 /* libPods-RNGuessNumber-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNGuessNumber-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		75F8B020443474813617ECC0 /* Pods-RNGuessNumber-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNGuessNumber-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-RNGuessNumber-tvOSTests/Pods-RNGuessNumber-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = RNGuessNumber/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -160,7 +160,6 @@
 				0F3E923EF4CF4F4CB904CADF /* OpenSans-Regular.ttf */,
 			);
 			name = Resources;
-			path = "";
 			sourceTree = "<group>";
 		};
 		75B876A75FAA742258DFA6D6 /* Pods */ = {
@@ -175,7 +174,6 @@
 				CAE5C6E3D7051180574702D2 /* Pods-RNGuessNumber-tvOSTests.debug.xcconfig */,
 				75F8B020443474813617ECC0 /* Pods-RNGuessNumber-tvOSTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};

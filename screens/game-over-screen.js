@@ -1,5 +1,5 @@
-import React from 'react';
-import {View, StyleSheet, Image} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, StyleSheet, Image, ScrollView, Dimensions} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
 import Card from '../components/card';
@@ -7,18 +7,32 @@ import OpenSansText from '../components/open-sans-text';
 import MainButton from '../components/main-button';
 
 import {resetGame} from '../redux/game/game.actions';
-import {
-  selectGuessAttempsCount,
-  selectMythicNumberValue,
-} from '../redux/mythic-number/mythic-number.selectors';
+import {selectGuessAttemptsCount} from '../redux/game/game.selectors';
+import {selectMythicNumberValue} from '../redux/mythic-number/mythic-number.selectors';
 import COLORS from '../constants/colors';
+import {changeMythicNumber} from '../redux/mythic-number/mythic-number.actions';
 
 const GameOverScreen = () => {
   const dispatch = useDispatch();
   const mythicNumber = useSelector(selectMythicNumberValue);
-  const attemptsCount = useSelector(selectGuessAttempsCount);
+  const attemptsCount = useSelector(selectGuessAttemptsCount);
+
+  const [availableDeviceHeight, setAvailableDeviceHeight] = useState(
+    Dimensions.get('window').height,
+  );
+
+  useEffect(() => {
+    const updateLayout = () => {
+      setAvailableDeviceHeight(Dimensions.get('window').height);
+    };
+
+    Dimensions.addEventListener('change', updateLayout);
+
+    return () => Dimensions.removeEventListener('change', updateLayout);
+  }, []);
 
   const restartHandler = () => {
+    dispatch(changeMythicNumber(null));
     dispatch(resetGame());
   };
 
@@ -28,22 +42,30 @@ const GameOverScreen = () => {
         source={require('../assets/success.png')}
         style={styles.backgroundImage}
       />
-      <Card style={styles.results}>
-        <OpenSansText style={styles.resultText}>
-          Your phone needed{' '}
-          <OpenSansText style={styles.highlighted}>
-            {attemptsCount}
-          </OpenSansText>{' '}
-          attempts to guess your number{' '}
-          <OpenSansText style={styles.highlighted}>{mythicNumber}</OpenSansText>{' '}
-        </OpenSansText>
-      </Card>
-      <MainButton
-        opposite
-        style={styles.restartButton}
-        onPress={restartHandler}>
-        Restart
-      </MainButton>
+      <ScrollView>
+        <Card
+          style={{
+            ...styles.results,
+            marginTop: availableDeviceHeight > 600 ? 140 : 60,
+          }}>
+          <OpenSansText style={styles.resultText}>
+            Your phone needed{' '}
+            <OpenSansText style={styles.highlighted}>
+              {attemptsCount}
+            </OpenSansText>{' '}
+            attempts to guess your number{' '}
+            <OpenSansText style={styles.highlighted}>
+              {mythicNumber}
+            </OpenSansText>{' '}
+          </OpenSansText>
+        </Card>
+        <MainButton
+          opposite
+          style={styles.restartButton}
+          onPress={restartHandler}>
+          Restart
+        </MainButton>
+      </ScrollView>
     </View>
   );
 };
@@ -51,17 +73,12 @@ const GameOverScreen = () => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+    alignItems: 'center',
   },
   results: {
     marginHorizontal: 20,
-    marginTop: 140,
     alignItems: 'center',
-  },
-  buttonsContaier: {
-    alignSelf: 'center',
-    marginTop: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
+    maxWidth: 350,
   },
   backgroundImage: {width: '100%', height: '100%', position: 'absolute'},
   highlighted: {

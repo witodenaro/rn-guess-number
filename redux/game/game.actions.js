@@ -11,3 +11,8 @@ export const endGame = () => ({
 export const resetGame = () => ({
   type: GameActionTypes.RESET_GAME,
 });
+
+export const setGuessAttempts = (attempts) => ({
+  type: GameActionTypes.SET_GUESS_ATTEMPS,
+  payload: attempts,
+});
