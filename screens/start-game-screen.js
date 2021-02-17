@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -17,15 +17,16 @@ import Input from '../components/input';
 import NumberContainer from '../components/number-container';
 import MainButton from '../components/main-button';
 import MythicNumberLimits from '../constants/mythic-number-limits';
-import {startGame} from '../redux/game/game.actions';
 
+import {startGame} from '../redux/game/game.actions';
 import {changeMythicNumber} from '../redux/mythic-number/mythic-number.actions';
 import {selectMythicNumberValue} from '../redux/mythic-number/mythic-number.selectors';
 import Orientation from 'react-native-orientation-locker';
 
 const StartGameScreen = () => {
-  console.log('locked to portrait');
-  Orientation.lockToPortrait();
+  useEffect(() => {
+    Orientation.lockToPortrait();
+  }, []);
 
   const mythicNumber = useSelector(selectMythicNumberValue);
   const dispatch = useDispatch();

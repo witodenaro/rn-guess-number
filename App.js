@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo} from 'react';
-import {View, StyleSheet, LogBox} from 'react-native';
+import {View, StyleSheet, LogBox, SafeAreaView} from 'react-native';
 import {useSelector} from 'react-redux';
 
 import Header from './components/header';
@@ -12,7 +12,6 @@ import SplashScreen from 'react-native-splash-screen';
 import Orientation from 'react-native-orientation-locker';
 
 const App = () => {
-  console.log('unlocked all');
   Orientation.unlockAllOrientations();
   useEffect(() => {
     SplashScreen.hide();
@@ -33,10 +32,10 @@ const App = () => {
   });
 
   return (
-    <View style={styles.screenView}>
+    <SafeAreaView style={styles.screenView}>
       <Header />
       {renderedContent}
-    </View>
+    </SafeAreaView>
   );
 };
 

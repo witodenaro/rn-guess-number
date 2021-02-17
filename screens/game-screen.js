@@ -4,14 +4,12 @@ import {
   View,
   Alert,
   FlatList,
-  SafeAreaView,
   Dimensions,
   ScrollView,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {selectMythicNumberValue} from '../redux/mythic-number/mythic-number.selectors';
 import Icon from 'react-native-vector-icons/Ionicons';
-import Orientation from 'react-native-orientation-locker';
 import NumberContainer from '../components/number-container';
 import Card from '../components/card';
 import OpenSansText from '../components/open-sans-text';
@@ -125,46 +123,6 @@ const GameScreen = () => {
 
   if (availableDeviceHeight < 600) {
     return (
-      <SafeAreaView style={styles.screen}>
-        <ScrollView
-          style={{width: '100%'}}
-          contentContainerStyle={{...styles.screen, flex: 0}}>
-          <Card style={styles.mythicNumberContainer}>
-            <OpenSansText style={styles.textTitle}>Mythic number:</OpenSansText>
-            <NumberContainer>{mythicNumber}</NumberContainer>
-          </Card>
-          <View style={styles.controls}>
-            <MainButton
-              opposite
-              onPress={nextGuessHandler.bind(null, DIRECTIONS.LOWER)}>
-              <Icon name="md-remove" size={20} />
-            </MainButton>
-            <View>
-              <OpenSansText style={styles.textTitle}>
-                Computer's guess:{' '}
-              </OpenSansText>
-              <NumberContainer>{currentGuess}</NumberContainer>
-            </View>
-            <MainButton
-              secondary
-              onPress={nextGuessHandler.bind(null, DIRECTIONS.GREATER)}>
-              <Icon name="md-add" size={20} />
-            </MainButton>
-          </View>
-          <View style={styles.historyWrapper}>
-            <OpenSansText style={styles.historyTitle}>
-              Previous guesses:{' '}
-            </OpenSansText>
-
-            {renderedHistory}
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    );
-  }
-
-  return (
-    <SafeAreaView style={styles.screen}>
       <ScrollView
         style={{width: '100%'}}
         contentContainerStyle={{...styles.screen, flex: 0}}>
@@ -172,24 +130,24 @@ const GameScreen = () => {
           <OpenSansText style={styles.textTitle}>Mythic number:</OpenSansText>
           <NumberContainer>{mythicNumber}</NumberContainer>
         </Card>
-        <Card style={styles.guessContainer}>
-          <OpenSansText style={styles.textTitle}>
-            Computer's guess:{' '}
-          </OpenSansText>
-          <NumberContainer>{currentGuess}</NumberContainer>
-        </Card>
-        <Card style={styles.buttonsContainer}>
+        <View style={styles.controls}>
           <MainButton
             opposite
             onPress={nextGuessHandler.bind(null, DIRECTIONS.LOWER)}>
             <Icon name="md-remove" size={20} />
           </MainButton>
+          <View>
+            <OpenSansText style={styles.textTitle}>
+              Computer's guess:{' '}
+            </OpenSansText>
+            <NumberContainer>{currentGuess}</NumberContainer>
+          </View>
           <MainButton
             secondary
             onPress={nextGuessHandler.bind(null, DIRECTIONS.GREATER)}>
             <Icon name="md-add" size={20} />
           </MainButton>
-        </Card>
+        </View>
         <View style={styles.historyWrapper}>
           <OpenSansText style={styles.historyTitle}>
             Previous guesses:{' '}
@@ -198,7 +156,41 @@ const GameScreen = () => {
           {renderedHistory}
         </View>
       </ScrollView>
-    </SafeAreaView>
+    );
+  }
+
+  return (
+    <ScrollView
+      style={{width: '100%'}}
+      contentContainerStyle={{...styles.screen, flex: 0}}>
+      <Card style={styles.mythicNumberContainer}>
+        <OpenSansText style={styles.textTitle}>Mythic number:</OpenSansText>
+        <NumberContainer>{mythicNumber}</NumberContainer>
+      </Card>
+      <Card style={styles.guessContainer}>
+        <OpenSansText style={styles.textTitle}>Computer's guess: </OpenSansText>
+        <NumberContainer>{currentGuess}</NumberContainer>
+      </Card>
+      <Card style={styles.buttonsContainer}>
+        <MainButton
+          opposite
+          onPress={nextGuessHandler.bind(null, DIRECTIONS.LOWER)}>
+          <Icon name="md-remove" size={20} />
+        </MainButton>
+        <MainButton
+          secondary
+          onPress={nextGuessHandler.bind(null, DIRECTIONS.GREATER)}>
+          <Icon name="md-add" size={20} />
+        </MainButton>
+      </Card>
+      <View style={styles.historyWrapper}>
+        <OpenSansText style={styles.historyTitle}>
+          Previous guesses:{' '}
+        </OpenSansText>
+
+        {renderedHistory}
+      </View>
+    </ScrollView>
   );
 };
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Platform} from 'react-native';
 
 import OpenSansText from '../components/open-sans-text';
 
@@ -21,11 +21,20 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
+    ...Platform.select({
+      ios: {
+        backgroundColor: 'white',
+      },
+    }),
   },
   headerTitle: {
-    color: 'black',
     fontSize: 18,
     color: 'white',
+    ...Platform.select({
+      ios: {
+        color: Colors.primary,
+      },
+    }),
   },
 });
 
